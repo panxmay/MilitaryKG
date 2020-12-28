@@ -5,8 +5,7 @@ import datetime
 import re
 from MilitaryKG.tools.html_paser import html_paser
 from MilitaryKG.tools.MyThreadPool import MyThreadPool
-from MilitaryKG.Pre.GetEntitySet import entity_set
-
+from MilitaryKG.Pre.GetEntitySet import GetEntity,GetWarSet,GetCompanySet
 class Producer(object):
     @staticmethod
     def producer(q, data):
@@ -17,8 +16,10 @@ def insertDB(data):
     fp.flush()
 
 # 构造生产者
-def product_data():
+def product_data(title):
     entity_queue = Queue()
+    eval_str = 'Get'+title+'Set()'
+    entity_set = eval(eval_str)
     for item in entity_set:
         Producer.producer(entity_queue, item)
     return entity_queue
@@ -45,10 +46,12 @@ def turn_page_thread(submission):
 maxsize = 25
 
 print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-save_path = "../../data/baidubaike/property.txt"
+# save_path = "../../data/baidubaike/property.txt"
+title = ['War','Company','Entity']
+save_path = '../../data/triples/'+title[0]+'.txt'
 fp = open(save_path,'w+',encoding='utf-8')
 
-q = product_data()
+q = product_data(title[0])
 entity_queue = Queue()
 pool = MyThreadPool()
 pool.addthread(queue=q, size=maxsize, func=turn_page_thread, timeout=15)

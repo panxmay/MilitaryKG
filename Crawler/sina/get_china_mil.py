@@ -5,7 +5,7 @@ import datetime
 import re
 from MilitaryKG.tools.html_paser import html_paser
 from MilitaryKG.tools.MyThreadPool import MyThreadPool
-from MilitaryKG.Crawler.sina.get_urls import get_homepage
+from MilitaryKG.Crawler.sina.get_urls import get_homepage,get_world,get_china
 
 class Producer(object):
     @staticmethod
@@ -19,7 +19,7 @@ def insertDB(data):
 # 构造生产者
 def product_data():
     entity_queue = Queue()
-    for item in g:
+    for item in get_world():
         Producer.producer(entity_queue, item)
     return entity_queue
 
@@ -47,7 +47,7 @@ def turn_page_thread(submission):
 maxsize = 1
 
 print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-save_path = "../../data/news/sina.txt"
+save_path = "../../data/news/sina_world.txt"
 fp = open(save_path,'w+',encoding='utf-8')
 
 q = product_data()

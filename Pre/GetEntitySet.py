@@ -43,4 +43,4 @@ def GetWeaponSet():
             fw.write(item+'\n')
     return entity_set
 
-GetWeaponSet()
+# GetWeaponSet()

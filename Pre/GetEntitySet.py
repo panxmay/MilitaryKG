@@ -12,7 +12,7 @@ def GetEntity():
 
 def GetWarSet():
     entity_set = set()
-    source_path = '../../data/entity/war.txt'
+    source_path = '../../data/entity/War.txt'
 
     entity_set = set()
     for item in open(source_path, 'r', encoding='utf-8'):
@@ -21,7 +21,7 @@ def GetWarSet():
 
 def GetCompanySet():
     entity_set = set()
-    source_path = '../../data/entity/company.txt'
+    source_path = '../../data/entity/Company.txt'
 
     entity_set = set()
     for item in open(source_path, 'r', encoding='utf-8'):
@@ -30,17 +30,11 @@ def GetCompanySet():
 
 def GetWeaponSet():
     entity_set = set()
-    source_path = '../data/triples/weapon_rdf.txt'
+    source_path = '../../data/entity/Weapon.txt'
 
     entity_set = set()
     for item in open(source_path, 'r', encoding='utf-8'):
-        templist = item.strip().split(';;;;;')
-        if len(templist)<2:
-            continue
-        entity_set.add(templist[0])
-    with open('../data/entity/Weapon.txt','w+',encoding='utf-8') as fw:
-        for item in entity_set:
-            fw.write(item+'\n')
+        entity_set.add(item.strip())
     return entity_set
 
 # GetWeaponSet()

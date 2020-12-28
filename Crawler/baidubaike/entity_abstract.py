@@ -50,7 +50,8 @@ def turn_page_thread(submission):
 
 maxsize = 25
 print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-titles = ['Company','Weapon','War']
+# titles = ['Weapon','War','Company']
+titles = ['Weapon']
 
 for title in titles:
     save_path = "../../data/baidubaike/" + title + "_abstract.txt"

@@ -5,7 +5,7 @@ import datetime
 import re
 from MilitaryKG.tools.html_paser import html_paser
 from MilitaryKG.tools.MyThreadPool import MyThreadPool
-from MilitaryKG.Pre.GetEntitySet import entity_set
+from MilitaryKG.Pre.GetEntitySet import GetWeaponSet,GetWarSet,GetCompanySet
 
 class Producer(object):
     @staticmethod
@@ -17,8 +17,10 @@ def insertDB(data):
     fp.flush()
 
 # 构造生产者
-def product_data():
+def product_data(title):
     entity_queue = Queue()
+    eval_str = 'Get'+title+'Set()'
+    entity_set = eval(eval_str)
     for item in entity_set:
         Producer.producer(entity_queue, item)
     return entity_queue
@@ -48,16 +50,20 @@ def turn_page_thread(submission):
 
 maxsize = 25
 print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-save_path = "../../data/baidubaike/abstract.txt"
-fp = open(save_path,'w+',encoding='utf-8')
+titles = ['Company','Weapon','War']
 
-q = product_data()
-entity_queue = Queue()
-pool = MyThreadPool()
-pool.addthread(queue=q, size=maxsize, func=turn_page_thread, timeout=15)
-pool.addthread(queue=entity_queue, size=1, func=insertDB, timeout=20)
-pool.startAll()
-pool.joinAll()
-fp.close()
+for title in titles:
+    save_path = "../../data/baidubaike/" + title + "_abstract.txt"
+    fp = open(save_path, 'w+', encoding='utf-8')
 
-print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), "结束")
+    q = product_data(title)
+    entity_queue = Queue()
+    pool = MyThreadPool()
+    pool.addthread(queue=q, size=maxsize, func=turn_page_thread, timeout=15)
+    pool.addthread(queue=entity_queue, size=1, func=insertDB, timeout=20)
+    pool.startAll()
+    pool.joinAll()
+    fp.close()
+    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), "结束")
+
+
